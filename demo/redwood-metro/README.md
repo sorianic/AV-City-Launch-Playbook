@@ -5,6 +5,12 @@
 **Status:** Synthetic / Fictional  
 **Target Launch:** October 2027
 
+## T-150 Ecosystem Map
+
+![Redwood Metro AV Ecosystem Map](Redwood%20Metro%20Ecosystem%20Map.png)
+
+*The T-150 ecosystem map illustrates the proposed two-way relationships between the AV operator and the local organizations that could support market readiness, community preparedness, workforce development, and sustainable expansion.*
+
 > A fictional city used to demonstrate how AVCLP could be applied from initial market assessment through launch and post-launch review.
 
 ---
