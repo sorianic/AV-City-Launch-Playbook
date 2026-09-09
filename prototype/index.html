@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AVCLP Redwood Metro Readiness Dashboard</title>
+  <style>
+    :root {
+      --bg: #08111f;
+      --panel: #0f1c2e;
+      --panel-2: #13243a;
+      --border: #243a56;
+      --text: #eef5ff;
+      --muted: #9fb0c5;
+      --blue: #54a8ff;
+      --green: #46d39a;
+      --yellow: #f1c85b;
+      --red: #ff6b6b;
+      --orange: #ff9f43;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: linear-gradient(180deg, #07101d 0%, #0a1625 100%);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .shell {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 22px 48px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: flex-start;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 32px;
+      letter-spacing: -0.5px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin-top: 8px;
+      line-height: 1.5;
+      max-width: 760px;
+    }
+
+    .scenario {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      min-width: 220px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.7;
+    }
+
+    .scenario strong {
+      color: var(--text);
+    }
+
+    .stage-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .stage-btn {
+      border: 1px solid var(--border);
+      background: var(--panel);
+      color: var(--muted);
+      border-radius: 10px;
+      padding: 14px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s ease;
+    }
+
+    .stage-btn:hover {
+      border-color: var(--blue);
+      color: var(--text);
+    }
+
+    .stage-btn.active {
+      background: #173a60;
+      border-color: var(--blue);
+      color: white;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .label {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .big-number {
+      font-size: 48px;
+      font-weight: 800;
+    }
+
+    .decision {
+      font-size: 24px;
+      font-weight: 800;
+      margin-top: 4px;
+    }
+
+    .decision-note {
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .progress {
+      height: 12px;
+      background: #09131f;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 14px;
+      border: 1px solid var(--border);
+    }
+
+    .progress-fill {
+      height: 100%;
+      transition: width 0.35s ease;
+    }
+
+    .section-title {
+      margin: 28px 0 14px;
+      font-size: 20px;
+    }
+
+    .domain-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .domain-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .domain-name {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .domain-score {
+      font-size: 28px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+
+    .status-pill {
+      display: inline-block;
+      padding: 5px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+    }
+
+    .green {
+      background: rgba(70, 211, 154, 0.14);
+      color: var(--green);
+    }
+
+    .watch {
+      background: rgba(241, 200, 91, 0.14);
+      color: var(--yellow);
+    }
+
+    .risk {
+      background: rgba(255, 107, 107, 0.14);
+      color: var(--red);
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .item {
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+
+    .item strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .item small {
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .rule-box {
+      margin-top: 20px;
+      border-left: 4px solid var(--blue);
+      background: #0d1b2b;
+      padding: 16px;
+      border-radius: 8px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .rule-box strong {
+      color: var(--text);
+    }
+
+    .footer {
+      margin-top: 30px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 900px) {
+      .summary-grid,
+      .domain-grid,
+      .two-col {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .topbar {
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .summary-grid,
+      .domain-grid,
+      .two-col,
+      .stage-tabs {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+
+    <div class="topbar">
+      <div>
+        <h1>Redwood Metro Market Readiness</h1>
+        <div class="subtitle">
+          Interactive AVCLP demonstration showing how readiness changes from initial market discovery through final launch verification.
+        </div>
+      </div>
+
+      <div class="scenario">
+        <strong>Scenario:</strong> RM-01<br />
+        <strong>Market:</strong> Redwood Metro, CA<br />
+        <strong>Fleet:</strong> 150 vehicles<br />
+        <strong>Target Launch:</strong> October 2027<br />
+        <strong>Status:</strong> Synthetic / Fictional
+      </div>
+    </div>
+
+    <div class="stage-tabs">
+      <button class="stage-btn active" data-stage="t180">T-180 Baseline</button>
+      <button class="stage-btn" data-stage="t60">T-60 Review</button>
+      <button class="stage-btn" data-stage="t30">T-30 Verification</button>
+    </div>
+
+    <div class="summary-grid">
+      <div class="card">
+        <div class="label">Overall Readiness</div>
+        <div id="overallScore" class="big-number">49%</div>
+        <div class="progress">
+          <div id="overallBar" class="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="label">System Recommendation</div>
+        <div id="decision" class="decision">PROCEED WITH CONDITIONS</div>
+        <div id="decisionNote" class="decision-note"></div>
+      </div>
+
+      <div class="card">
+        <div class="label">Critical Attention</div>
+        <div id="criticalCount" class="big-number">5</div>
+        <div class="decision-note">Domains requiring mitigation or active watch.</div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Readiness Domains</h2>
+    <div id="domainGrid" class="domain-grid"></div>
+
+    <div class="rule-box">
+      <strong>AVCLP decision principle:</strong>
+      overall readiness cannot hide a critical gap. A market may have a strong average score and still receive a CONDITIONAL GO or NO-GO recommendation if a required domain remains below threshold.
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <div class="label">Top Risks / Gaps</div>
+        <div id="riskList" class="list"></div>
+      </div>
+
+      <div class="card">
+        <div class="label">Active Mitigations / Partnerships</div>
+        <div id="actionList" class="list"></div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Decision Logic</h2>
+    <div class="card">
+      <div class="list">
+        <div class="item">
+          <strong>GREEN</strong>
+          <small>85–100. Domain is considered ready for the current phase.</small>
+        </div>
+        <div class="item">
+          <strong>WATCH</strong>
+          <small>75–84. Progress may continue, but the issue remains visible and actively managed.</small>
+        </div>
+        <div class="item">
+          <strong>MITIGATION REQUIRED</strong>
+          <small>Below 75. Significant readiness work remains.</small>
+        </div>
+        <div class="item">
+          <strong>Launch Rule</strong>
+          <small>Any required launch-critical domain below 75 prevents a GO recommendation. Any domain between 75 and 84 can result in CONDITIONAL GO.</small>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      AV City Launch Playbook (AVCLP) v0.1 — Independent portfolio demonstration.
+      Redwood Metro, all organizations, readiness scores, timelines, risks, and deployment data shown here are synthetic and fictional.
+      This prototype does not represent the internal processes, safety standards, deployment methodology, or operating procedures of any real autonomous vehicle operator.
+    </div>
+  </div>
+
+  <script>
+    const stages = {
+      t180: {
+        scores: {
+          Operational: 68,
+          Infrastructure: 72,
+          "Public Safety": 41,
+          Workforce: 38,
+          Community: 46,
+          Accessibility: 43,
+          Partnerships: 35
+        },
+        risks: [
+          ["Public-safety readiness", "No coordinated AV familiarization or emergency-response program exists."],
+          ["Workforce pipeline", "No established local AV fleet or operational-support training pathway."],
+          ["Accessibility input", "Accessibility organizations have not yet participated in deployment planning."],
+          ["Community familiarity", "Most residents have limited direct experience with autonomous vehicles."],
+          ["Partnership structure", "Potential partners exist, but responsibilities and deliverables are not yet defined."]
+        ],
+        actions: [
+          ["Ecosystem mapping", "Identify critical city, public-safety, workforce, accessibility, and infrastructure stakeholders."],
+          ["First-responder planning", "Begin development of police, fire, EMS, and dispatch familiarization activities."],
+          ["Workforce engagement", "Evaluate community-college and workforce-development partnerships."],
+          ["Accessibility outreach", "Bring accessibility organizations into planning before launch decisions are finalized."]
+        ]
+      },
+
+      t60: {
+        scores: {
+          Operational: 86,
+          Infrastructure: 89,
+          "Public Safety": 78,
+          Workforce: 71,
+          Community: 74,
+          Accessibility: 79,
+          Partnerships: 82
+        },
+        risks: [
+          ["Workforce readiness", "Training pathway exists but staffing and qualification progress remain below threshold."],
+          ["Community readiness", "Community engagement is active, but unresolved concerns remain before launch."],
+          ["Public-safety readiness", "Agencies are engaged, but additional exercises and procedure validation are required."]
+        ],
+        actions: [
+          ["First-responder exercises", "Conduct multi-agency police, fire, EMS, and dispatch scenario exercises."],
+          ["Community Week preparation", "Finalize demonstrations, Q&A sessions, accessibility events, and public information."],
+          ["Workforce mitigation", "Accelerate training, hiring, and qualification activity with local education partners."],
+          ["Accessibility validation", "Review and assign owners to high-priority rider-experience feedback."]
+        ]
+      },
+
+      t30: {
+        scores: {
+          Operational: 96,
+          Infrastructure: 94,
+          "Public Safety": 91,
+          Workforce: 86,
+          Community: 84,
+          Accessibility: 90,
+          Partnerships: 92
+        },
+        risks: [
+          ["Community readiness", "Community remains at WATCH status and requires continued engagement through launch."],
+          ["Launch monitoring", "Community feedback and operational indicators must be monitored during phased deployment."]
+        ],
+        actions: [
+          ["Conditional launch", "Proceed with phased deployment while maintaining community-readiness mitigation."],
+          ["Launch dashboard", "Track fleet, safety, support, workforce, accessibility, and community indicators."],
+          ["Phased fleet expansion", "Expand from 25 to 50 to 100 to 150 vehicles only when readiness indicators support progression."],
+          ["90-day integration review", "Measure operational performance and local ecosystem outcomes at +30, +60, and +90 days."]
+        ]
+      }
+    };
+
+    const launchCriticalDomains = [
+      "Operational",
+      "Infrastructure",
+      "Public Safety",
+      "Workforce",
+      "Accessibility"
+    ];
+
+    const buttons = document.querySelectorAll(".stage-btn");
+
+    function statusFor(score) {
+      if (score >= 85) return { label: "GREEN", cls: "green", color: "var(--green)" };
+      if (score >= 75) return { label: "WATCH", cls: "watch", color: "var(--yellow)" };
+      return { label: "MITIGATION REQUIRED", cls: "risk", color: "var(--red)" };
+    }
+
+    function calculateDecision(scores, stageKey) {
+      const values = Object.values(scores);
+      const average = Math.round(values.reduce((a, b) => a + b, 0) / values.length);
+
+      const criticalBelow75 = launchCriticalDomains.some(domain => scores[domain] < 75);
+      const anyWatch = values.some(score => score >= 75 && score < 85);
+
+      if (stageKey === "t180") {
+        return {
+          average,
+          decision: "PROCEED WITH CONDITIONS",
+          note: "The market opportunity supports continued planning, but major readiness gaps must be mitigated before launch."
+        };
+      }
+
+      if (criticalBelow75) {
+        return {
+          average,
+          decision: "NOT YET READY",
+          note: "At least one launch-critical readiness domain remains below the minimum threshold."
+        };
+      }
+
+      if (anyWatch) {
+        return {
+          average,
+          decision: "CONDITIONAL GO",
+          note: "Launch-critical domains meet minimum thresholds, but one or more WATCH conditions require continued mitigation."
+        };
+      }
+
+      return {
+        average,
+        decision: "GO",
+        note: "Required readiness domains meet launch thresholds with no remaining WATCH conditions."
+      };
+    }
+
+    function render(stageKey) {
+      const stage = stages[stageKey];
+      const result = calculateDecision(stage.scores, stageKey);
+
+      document.getElementById("overallScore").textContent = result.average + "%";
+      document.getElementById("decision").textContent = result.decision;
+      document.getElementById("decisionNote").textContent = result.note;
+
+      const bar = document.getElementById("overallBar");
+      bar.style.width = result.average + "%";
+      bar.style.background =
+        result.average >= 85 ? "var(--green)" :
+        result.average >= 75 ? "var(--yellow)" :
+        "var(--red)";
+
+      const domainGrid = document.getElementById("domainGrid");
+      domainGrid.innerHTML = "";
+
+      let attention = 0;
+
+      Object.entries(stage.scores).forEach(([domain, score]) => {
+        const status = statusFor(score);
+
+        if (score < 85) attention++;
+
+        const card = document.createElement("div");
+        card.className = "domain-card";
+        card.innerHTML = `
+          <div class="domain-name">${domain}</div>
+          <div class="domain-score">${score}</div>
+          <span class="status-pill ${status.cls}">${status.label}</span>
+          <div class="progress">
+            <div class="progress-fill" style="width:${score}%; background:${status.color};"></div>
+          </div>
+        `;
+
+        domainGrid.appendChild(card);
+      });
+
+      document.getElementById("criticalCount").textContent = attention;
+
+      const riskList = document.getElementById("riskList");
+      riskList.innerHTML = "";
+
+      stage.risks.forEach(([title, detail]) => {
+        const item = document.createElement("div");
+        item.className = "item";
+        item.innerHTML = `<strong>${title}</strong><small>${detail}</small>`;
+        riskList.appendChild(item);
+      });
+
+      const actionList = document.getElementById("actionList");
+      actionList.innerHTML = "";
+
+      stage.actions.forEach(([title, detail]) => {
+        const item = document.createElement("div");
+        item.className = "item";
+        item.innerHTML = `<strong>${title}</strong><small>${detail}</small>`;
+        actionList.appendChild(item);
+      });
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => {
+        buttons.forEach(btn => btn.classList.remove("active"));
+        button.classList.add("active");
+        render(button.dataset.stage);
+      });
+    });
+
+    render("t180");
+  </script>
+</body>
+</html>
