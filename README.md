@@ -1,6 +1,14 @@
 # AV City Launch Playbook (AVCLP)
 
 > **What if local partnership became part of the AV deployment model?**
+>
+> ## Live Interactive Demonstration
+
+**[Launch the Redwood Metro Market Readiness Dashboard](https://sorianic.github.io/AV-City-Launch-Playbook/prototype/)**
+
+Explore a synthetic AV market-entry scenario from initial discovery through final launch verification. The interactive dashboard demonstrates readiness scoring across seven domains, active risks and mitigations, and AVCLP's proposed GO / CONDITIONAL GO / NO-GO decision logic.
+
+**Scenario progression:** T-180 Baseline → T-60 Review → T-30 Verification
 
 AV City Launch Playbook (AVCLP) is an independent, open framework exploring how autonomous vehicle operators could approach new-market entry as both an operational deployment and an opportunity to build a stronger local ecosystem.
 
