@@ -13,6 +13,31 @@
 
 > A fictional city used to demonstrate how AVCLP could be applied from initial market assessment through launch and post-launch review.
 
+## Explore AVCLP
+
+AVCLP includes both the proposed framework and a complete synthetic demonstration showing how it could be applied to a fictional AV market entry.
+
+### Core Framework
+
+- **[AVCLP Operational Playbook](PLAYBOOK.md)** — The full Discover → Map → Partner → Introduce → Verify → Deploy → Measure framework.
+- **[Live Readiness Dashboard](https://sorianic.github.io/AV-City-Launch-Playbook/prototype/)** — Interactive Redwood Metro readiness progression and decision logic.
+
+### Redwood Metro Demonstration
+
+Follow the fictional market-entry scenario from initial assessment through post-launch review:
+
+1. **[Redwood Metro Scenario](demo/redwood-metro/README.md)** — Scenario overview and T-180 baseline.
+2. **[T-150: Ecosystem & Partner Map](demo/redwood-metro/ECOSYSTEM-MAP.md)** — Identifies the local ecosystem and launch dependencies.
+3. **[T-120: Partnership Action Plan](demo/redwood-metro/PARTNERSHIP-ACTION-PLAN.md)** — Converts priority relationships into owners, deliverables, dependencies, and measures.
+4. **[T-90: Community Introduction](demo/redwood-metro/COMMUNITY-INTRODUCTION.md)** — Pre-launch public safety, accessibility, workforce, student, business, and community engagement.
+5. **[T-60 / T-30: Launch Readiness & Decision](demo/redwood-metro/LAUNCH-READINESS.md)** — Shows how unresolved gaps move the scenario from NOT YET READY to CONDITIONAL GO.
+6. **[+90: Market Integration Review](demo/redwood-metro/MARKET-INTEGRATION-REVIEW.md)** — Measures operational performance and local ecosystem outcomes after launch.
+
+### Scenario Progression
+
+`49% T-180` → `80% T-60` → `90% T-30` → `94% +90`
+
+**PROCEED WITH CONDITIONS → NOT YET READY → CONDITIONAL GO → SUSTAIN & EXPAND**
 ---
 
 ## Scenario
